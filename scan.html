@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scanner QR Code - Contrôle Accès</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.2.1/html5-qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #qr-reader {
+            width: 100%;
+            max-width: 400px;
+            margin: auto;
+        }
+        #status {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Scanner QR Code - Contrôle d'Accès</h2>
+    <div id="qr-reader"></div>
+    <div id="status">Scannez un QR Code</div>
+
+    <script>
+        const scriptUrl = "https://script.google.com/macros/s/AKfycbyAuVsHMMJKwArqJnKRJVmizZs0j3wz7ynQXn_zyrp7fXNft9FaiMpowf61fbDEfNVx/exec";
+        function onScanSuccess(qrCodeMessage) {
+            document.getElementById("status").innerText = "Vérification en cours...";
+
+            fetch(`${scriptUrl}?qr=${qrCodeMessage}`)
+                .then(response => response.text())
+                .then(result => {
+                    window.location.href = `result.html?message=${encodeURIComponent(result)}`;
+                })
+                .catch(error => {
+                    window.location.href = `result.html?message=${encodeURIComponent("❌ Erreur de connexion ! Vérifiez Apps Script.")}`;
+                });
+        }
+
+        let html5QrCode = new Html5Qrcode("qr-reader");
+        html5QrCode.start(
+            { facingMode: "environment" }, 
+            { fps: 10, qrbox: 250 }, 
+            onScanSuccess
+        );
+    </script>
+
+</body>
+</html>

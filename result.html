@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultat du Scan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #message {
+            font-size: 22px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 20px;
+        }
+        .btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Résultat du Scan</h2>
+    <p id="message">Analyse en cours...</p>
+    <button class="btn" onclick="retournerAuScan()">🔄 Nouveau Scan</button>
+
+    <script>
+        // Récupère le message de l'URL et l'affiche
+        const urlParams = new URLSearchParams(window.location.search);
+        const message = urlParams.get("message");
+        document.getElementById("message").innerText = message;
+
+        function retournerAuScan() {
+            window.location.href = "scan.html"; // Redirige vers la page de scan
+        }
+    </script>
+
+</body>
+</html>
