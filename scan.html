@@ -30,19 +30,26 @@
     <div id="status">Scannez un QR Code</div>
 
     <script>
-        const scriptUrl = "https://script.google.com/macros/s/AKfycbyAuVsHMMJKwArqJnKRJVmizZs0j3wz7ynQXn_zyrp7fXNft9FaiMpowf61fbDEfNVx/exec";
-        function onScanSuccess(qrCodeMessage) {
-            document.getElementById("status").innerText = "Vérification en cours...";
+        const scriptUrl = "hhttps://script.google.com/macros/s/AKfycbyAuVsHMMJKwArqJnKRJVmizZs0j3wz7ynQXn_zyrp7fXNft9FaiMpowf61fbDEfNVx/exec";
+       function onScanSuccess(qrCodeMessage) {
+    document.getElementById("status").innerText = "Vérification en cours...";
 
-            fetch(`${scriptUrl}?qr=${qrCodeMessage}`)
-                .then(response => response.text())
-                .then(result => {
-                    window.location.href = `result.html?message=${encodeURIComponent(result)}`;
-                })
-                .catch(error => {
-                    window.location.href = `result.html?message=${encodeURIComponent("❌ Erreur de connexion ! Vérifiez Apps Script.")}`;
-                });
-        }
+    fetch(`${scriptUrl}?qr=${qrCodeMessage}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP : ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(result => {
+            window.location.href = `result.html?message=${encodeURIComponent(result)}`;
+        })
+        .catch(error => {
+            document.getElementById("status").innerText = "❌ Erreur de connexion ! Vérifiez Apps Script.";
+            console.error("Erreur de connexion : ", error);
+        });
+}
+
 
         let html5QrCode = new Html5Qrcode("qr-reader");
         html5QrCode.start(
